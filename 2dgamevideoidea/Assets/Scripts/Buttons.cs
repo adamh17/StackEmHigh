@@ -20,7 +20,7 @@ public class Buttons : MonoBehaviour
     }
 
 
-    void changetoMainScene()
+    public void changetoMainScene()
     {
         SceneManager.LoadScene("main");
     }
