@@ -11,6 +11,7 @@ public class MakePlankFall : MonoBehaviour
 
     public float moveSpeed = 2.0f;
     public int count = 0;
+    public float yheight = 1.0f;
 
     public MoveCable mcScript;
 
@@ -21,25 +22,32 @@ public class MakePlankFall : MonoBehaviour
     public MoveCable mc;
     public MoveClouds mcc;
 
-    float NewObjectWidth;
-    float OldObjectWidth;
+    //float NewObjectWidth;
+    //float OldObjectWidth;
+
+    public GameManager gameManager;
+    public Crossfade cf;
+
+    public float timeBetweenTaps = 1.0f;
+    float currentTime;
+
+    AudioSource plankHit;
+    int triggerTimes = 0;
 
     private void Start()
     {
         GameObject name = GameObject.Find("Plank of wood");
         cable = GameObject.FindGameObjectWithTag("cable");
 
-        OldObjectWidth = this.transform.localScale.x;
-        //print (OldObjectWidth);
-        NewObjectWidth = OldObjectWidth * 764 / 1368 * Screen.width / Screen.height;
-        //this.transform.localScale.x = NewObjectWidth ;
-        print(NewObjectWidth);
+        //OldObjectWidth = this.transform.localScale.x;
+        //NewObjectWidth = OldObjectWidth * 764 / 1368 * Screen.width / Screen.height;
 
+        plankHit = GameObject.FindObjectOfType<AudioSource>();
     }
 
     IEnumerator waiter()
     {
-        yield return new WaitForSeconds(2.0f);
+        yield return new WaitForSeconds(1.0f);
         if(name == "Plank of wood")
         {
             rigidbody22 = GetComponent<Rigidbody2D>();
@@ -60,7 +68,7 @@ public class MakePlankFall : MonoBehaviour
 
         cableTransform = new Vector3(cable.transform.position.x, cable.transform.position.y - 1.58f, cable.transform.position.z);
 
-        if (transform.position.y > 1)
+        if (transform.position.y > yheight)
         {
             if (moveRight)
             {
@@ -85,16 +93,19 @@ public class MakePlankFall : MonoBehaviour
 
         if(transform.position.y < -5)
         {
-            SceneManager.LoadScene("EndScreen");
+            gameManager.GameOver();
+            cf.transitionLevel();
         }
-        
 
-        //if (Input.touchCount > 0)
-        if (Input.GetMouseButtonDown(0))
+        currentTime += Time.deltaTime;
+        if (Input.GetMouseButtonDown(0) && currentTime >= timeBetweenTaps)
         {
+
             rigidbody22 = GetComponent<Rigidbody2D>();
             rigidbody22.gravityScale = 1;
             count += 1;
+
+            currentTime = 0.0f;
 
             if (count == 11)
             {
@@ -106,22 +117,13 @@ public class MakePlankFall : MonoBehaviour
             Begin();
         }
     }
-    public static float GetScreenToWorldHeight
+
+    private void OnCollisionEnter2D(Collision2D collision)
     {
-        get
+        if(triggerTimes == 0)
         {
-            Vector2 topRightCorner = new Vector2(1, 1);
-            Vector2 edgeVector = Camera.main.ViewportToWorldPoint(topRightCorner); var height = edgeVector.y * 2;
-            return height;
-        }
-    }
-    public static float GetScreenToWorldWidth
-    {
-        get
-        {
-            Vector2 topRightCorner = new Vector2(1, 1);
-            Vector2 edgeVector = Camera.main.ViewportToWorldPoint(topRightCorner); var width = edgeVector.x * 2;
-            return width;
+            plankHit.Play();
+            triggerTimes += 1;
         }
     }
 }

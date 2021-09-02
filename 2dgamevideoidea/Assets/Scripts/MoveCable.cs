@@ -8,12 +8,6 @@ public class MoveCable : MonoBehaviour
     public float moveSpeed = 2.0f;
     public bool moveRight = true;
 
-    private void Start()
-    {
-
-    }
-
-    // Update is called once per frame
     void Update()
     {
         if (moveRight)
@@ -38,6 +32,6 @@ public class MoveCable : MonoBehaviour
 
     public void moveCable()
     {
-        transform.localPosition = new Vector3(transform.position.x, transform.position.y + 0.2f, transform.position.z);
+        transform.localPosition = new Vector3(transform.position.x, transform.position.y + 0.15f, transform.position.z);
     }
 }

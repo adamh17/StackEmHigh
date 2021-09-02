@@ -6,6 +6,7 @@ TagManager:
   tags:
   - SpawnPlanks
   - cable
+  - Music
   layers:
   - Default
   - TransparentFX
