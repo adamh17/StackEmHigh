@@ -22,9 +22,6 @@ public class MakePlankFall : MonoBehaviour
     public MoveCable mc;
     public MoveClouds mcc;
 
-    //float NewObjectWidth;
-    //float OldObjectWidth;
-
     public GameManager gameManager;
     public Crossfade cf;
 
@@ -39,10 +36,8 @@ public class MakePlankFall : MonoBehaviour
         GameObject name = GameObject.Find("Plank of wood");
         cable = GameObject.FindGameObjectWithTag("cable");
 
-        //OldObjectWidth = this.transform.localScale.x;
-        //NewObjectWidth = OldObjectWidth * 764 / 1368 * Screen.width / Screen.height;
-
         plankHit = GameObject.FindObjectOfType<AudioSource>();
+
     }
 
     IEnumerator waiter()
